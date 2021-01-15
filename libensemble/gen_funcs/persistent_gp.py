@@ -36,12 +36,14 @@ def persistent_gp_gen_f(H, persis_info, gen_specs, libE_info):
     # Number of points to generate initially
     number_of_gen_points = gen_specs['user']['gen_batch_size']
 
+    acq_method = gen_specs['user']['acq_method']
+
     # Initialize the dragonfly GP optimizer
     domain = EuclideanDomain([[lo, up] for lo, up in zip(lb_list, ub_list)])
     func_caller = EuclideanFunctionCaller(None, domain)
     opt = EuclideanGPBandit(func_caller, ask_tell_mode=True,
                             options=Namespace(
-                                acq='ts', build_new_model_every=number_of_gen_points,
+                                acq=acq_method, build_new_model_every=number_of_gen_points,
                                 init_capital=number_of_gen_points))
     opt.initialise()
 
